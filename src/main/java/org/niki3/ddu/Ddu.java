@@ -5,6 +5,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -16,6 +17,9 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.niki3.ddu.items.addItems;
+import org.niki3.ddu.items.event.add_tags;
+import org.niki3.ddu.server.PacketHandler;
 import org.slf4j.Logger;
 
 @Mod(Ddu.MODID)
@@ -32,6 +36,10 @@ public class Ddu {
 
         BLOCKS.register(modEventBus);
         ITEMS.register(modEventBus);
+
+        addItems.ITEMS.register(modEventBus);
+        MinecraftForge.EVENT_BUS.register(this);
+        PacketHandler.registerPackets();
     }
 
     @SubscribeEvent
@@ -45,7 +53,7 @@ public class Ddu {
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 
         // タグの生成プロバイダを追加
-        //generator.addProvider(event.includeServer(), new add_tags(generator, existingFileHelper));
+        generator.addProvider(event.includeServer(), new add_tags(generator, existingFileHelper));
     }
 
     @SubscribeEvent
