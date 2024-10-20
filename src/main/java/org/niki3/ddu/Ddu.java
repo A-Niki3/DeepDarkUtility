@@ -1,0 +1,64 @@
+package org.niki3.ddu;
+
+import com.mojang.logging.LogUtils;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.data.event.GatherDataEvent;
+import net.minecraftforge.event.server.ServerStartingEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import org.slf4j.Logger;
+
+@Mod(Ddu.MODID)
+public class Ddu {
+    public static final String MODID = "ddu";
+    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
+
+    public Ddu(){
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::gatherData);
+
+        BLOCKS.register(modEventBus);
+        ITEMS.register(modEventBus);
+    }
+
+    @SubscribeEvent
+    public void commonSetup(final FMLCommonSetupEvent event) {
+
+    }
+
+    @SubscribeEvent
+    public void gatherData(GatherDataEvent event) {
+        DataGenerator generator = event.getGenerator();
+        ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
+
+        // タグの生成プロバイダを追加
+        //generator.addProvider(event.includeServer(), new add_tags(generator, existingFileHelper));
+    }
+
+    @SubscribeEvent
+    public void onServerStarting(ServerStartingEvent event) {
+
+    }
+
+    @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    public static class ClientModEvents {
+
+        @SubscribeEvent
+        public static void onClientSetup(FMLClientSetupEvent event){
+
+        }
+    }
+}

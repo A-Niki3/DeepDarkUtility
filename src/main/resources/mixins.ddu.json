@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "org.niki3.ddu.mixin",
+  "mixins": [
+    "vib_mixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [],
+  "server": []
+}
